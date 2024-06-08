@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en-ca">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark light">
+    <title>Tabs custom element</title>
+    <style>
+      :root {
+        font-family: system-ui;
+        font-feature-settings: "ss06";
+      }
+
+      kno-tab:state(current) {
+        color: Canvas;
+        background-color: CanvasText;
+      }
+    </style>
+    <script type="module">
+      import {KnoTabsElement} from "./kno-tabs-element.js";
+
+      KnoTabsElement.define();
+    </script>
+  </head>
+  <body>
+
+    <kno-tabs>
+      <kno-tab>Knocked Loose</kno-tab>
+      <kno-panel>You Won’t Go Before You’re Supposed To</kno-panel>
+
+      <kno-tab>Comeback Kid</kno-tab>
+      <kno-panel>Heavy Steps</kno-panel>
+
+      <kno-tab>Militarie Gun</kno-tab>
+      <kno-panel>Life Under The Gun</kno-panel>
+    </kno-tabs>
+
+  </body>
+</html>
