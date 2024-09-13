@@ -1,3 +1,5 @@
+let id = -1;
+
 export class KnoPanelElement extends HTMLElement {
   static styleSheet = new CSSStyleSheet();
 
@@ -19,6 +21,8 @@ export class KnoPanelElement extends HTMLElement {
 
     this.#internals.role = "tabpanel";
 
+    id++;
+
     this.attachShadow({
       mode: "open",
     });
@@ -27,7 +31,7 @@ export class KnoPanelElement extends HTMLElement {
     this.shadowRoot.adoptedStyleSheets = [this.constructor.styleSheet];
 
     if (!("ariaControlsElements" in ElementInternals.prototype)) {
-      this.setAttribute("id", `tabpanel-a`)
+      this.setAttribute("id", `tabpanel-${id}`)
     }
   }
 

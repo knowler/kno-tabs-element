@@ -18,9 +18,6 @@ export class KnoTabsElement extends HTMLElement {
     }
   `);
 
-  tabs = new WeakMap();
-  panelsByTab = new WeakMap();
-
   constructor() {
     super();
 
@@ -49,25 +46,24 @@ export class KnoTabsElement extends HTMLElement {
 
   connectedCallback() {
     // If none are selected, then set the first one to be selected.
-    Promise.all([customElements.whenDefined("kno-tab"), customElements.whenDefined("kno-panel")]).then(() => {
-      this.tabs = this.querySelectorAll("kno-tab");
-      this.panels = this.querySelectorAll("kno-panel");
+    this.tabs = this.querySelectorAll("kno-tab");
+    this.panels = this.querySelectorAll("kno-panel");
 
-      let selectedIndex = 0;
-      for (let i = 0; i < this.tabs.length; i++) {
-        const tab = this.tabs.item(i);
-        const panel = this.panels.item(i);
+    let selectedIndex = 0;
+    for (let i = 0; i < this.tabs.length; i++) {
+      const tab = this.tabs.item(i);
+      const panel = this.panels.item(i);
 
-        tab.deselect();
-        tab.link(panel);
+      tab.deselect();
+      tab.link(panel);
 
-        if (tab.hasAttribute("selected")) selectedIndex = i;
-      }
-      this.tabs.item(selectedIndex).select();
+      if (tab.hasAttribute("selected")) selectedIndex = i;
+    }
+    const selectedTab = this.tabs.item(selectedIndex);
+    selectedTab.select();
 
-      this.tabList.assign(...this.tabs);
-      this.panelSlot.assign(this.panels.item(selectedIndex));
-    });
+    this.tabList.assign(...this.tabs);
+    this.panelSlot.assign(this.panels.item(selectedIndex));
   }
 
   handleEvent(event) {
@@ -84,6 +80,8 @@ export class KnoTabsElement extends HTMLElement {
 
               nextTab.select();
               currentTab.deselect();
+              currentTab.blur();
+              nextTab.focus();
               break;
             }
             case "ArrowLeft": {
@@ -95,6 +93,7 @@ export class KnoTabsElement extends HTMLElement {
 
               prevTab.select();
               currentTab.deselect();
+              prevTab.focus();
               break;
             }
           }
@@ -104,13 +103,13 @@ export class KnoTabsElement extends HTMLElement {
   }
 
   static define() {
+    KnoTabElement.define();
+    KnoPanelElement.define();
+
     if (!window.customElements.get("kno-tabs")) {
       window[this.name] = this;
       window.customElements.define("kno-tabs", this);
     }
-
-    KnoTabElement.define();
-    KnoPanelElement.define();
   }
 }
 
